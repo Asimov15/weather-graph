@@ -1,0 +1,3 @@
+echo start
+nice rsync -avgSH --delete --delete-excluded --ignore-errors --delete-after  --no-perms --no-owner --no-group . /var/www/html/weather/ 
+echo end

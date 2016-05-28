@@ -1,0 +1,4 @@
+echo start
+nice rsync -avgSH --delete --delete-excluded --ignore-errors --delete-after  --no-perms --no-owner --no-group \
+. root@198.199.72.243:/var/www/html/weather/ 
+echo end

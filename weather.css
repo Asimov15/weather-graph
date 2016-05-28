@@ -1,0 +1,80 @@
+div.dz
+{
+/*
+    border: 5px solid red;
+*/
+    margin: 1px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+img.dz
+{
+/*
+	border: 5px solid black;
+*/
+	width: 1210px;	
+}
+
+div.validate
+{    
+/*
+    border: 5px solid green;
+*/
+    margin-left: auto;
+    margin-right: auto;
+    width: 20em;
+    height: 2em;
+}
+
+div.validate2
+{    
+    margin-left: auto;
+    margin-right: auto;
+    width: 20em;
+    height: 4em;
+}
+
+h1.dz
+{
+	/* border: 5px solid black; */
+	text-align: center;
+	margin: 1px;
+	padding-top: 1px;
+	padding-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40em;
+}
+
+body
+{
+/*
+	border: 5px solid black;
+*/
+	margin: 10px;
+}
+
+form
+{
+/*
+	border: 5px solid blue;	
+*/
+	padding-bottom: 20px;
+}
+
+
+select
+{    
+    /*margin-left: auto;
+    margin-right: auto;
+    width: auto;
+    text-align: center; 
+    margin-bottom: 0.5em; */
+    float: left;
+}
+
+input
+{
+	float: right;
+}
