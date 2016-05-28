@@ -19,26 +19,26 @@ from matplotlib import style
 from matplotlib.ticker import MultipleLocator, FormatStrFormatter
 from matplotlib.dates import DayLocator, HourLocator, DateFormatter, drange
 
-#style.use('fivethirtyeight')
-url        	= "http://www.bom.gov.au/fwo/IDV60901/IDV60901.95936.json"
-response  	= urllib.urlopen(url)
-data1     	= json.loads(response.read())
-i         	= 0
-air_temp    = []
-temp3       = []
-degree_sign = unichr(176)
+url        				= "http://www.bom.gov.au/fwo/IDV60901/IDV60901.95936.json"
+response  				= urllib.urlopen(url)
+data1     				= json.loads(response.read())
+air_temp    			= []
+local_date_times       	= []
+degree_sign 			= unichr(176)
+max_air_temp			= 0.0
+date_sel     			= datetime.today().date()
+max_airi                = 0
 
 if len(sys.argv) == 1:
-	outfn   = "test.png"
-elif len(sys.argv) == 2:
-	td      = datetime.today().date()
-	outfn   = sys.argv[1]
+	outfn   			= "test.png"		
+elif len(sys.argv) == 2:	
+	outfn   			= sys.argv[1]
 elif len(sys.argv) > 2:
-	td1     = sys.argv[2]
-	td     	= date(int(td1[-4:]), int(td1[3:-4]), int(td1[:2]))
-	outfn   = sys.argv[1]
+	date_par     		= sys.argv[2]
+	date_sel     		= date(int(date_par[-4:]), int(date_par[3:-4]), int(date_par[:2]))
+	outfn   			= sys.argv[1]
 
-font 		= \
+font 					= \
 {
 	'family' : 'normal',
     'weight' : 'bold',
@@ -50,19 +50,24 @@ loc = head[0]["name"]
 
 for data2 in data1['observations']['data']:	
 
-	temp1 = (data2["local_date_time_full"])
-	temp2 = datetime(int(temp1[:4]), int(temp1[4:-8]), int(temp1[6:-6]), int(temp1[8:-4]), int(temp1[10:-2]))
+	local_date_time = (data2["local_date_time_full"])
+	local_date_timef = datetime(int(local_date_time[:4]), int(local_date_time[4:-8]), int(local_date_time[6:-6]), int(local_date_time[8:-4]), int(local_date_time[10:-2]))
 
-	if temp2.date() == td:	
-		temp3.append(temp2)
-		air_temp.append(data2["air_temp"])	
+	if local_date_timef.date() == date_sel:	
+		local_date_times.append(local_date_timef)
+		air_tempf = float(data2["air_temp"])
+		if air_tempf > max_air_temp:
+			max_air_temp = air_tempf			
+			max_index = len(local_date_times) - 1
+			
+		air_temp.append(air_tempf)	
 
-dates = mdates.date2num(temp3)
+dates = mdates.date2num(local_date_times)
 fig, ax = plt.subplots()
 lines = ax.plot_date(dates,air_temp,'b-')
 
-t1 = datetime(td.year, td.month, td.day)
-t2 = datetime(td.year, td.month, td.day + 1)
+t1 = datetime(date_sel.year, date_sel.month, date_sel.day)
+t2 = datetime(date_sel.year, date_sel.month, date_sel.day + 1)
 ax.set_xlim(t1,t2)
 
 ax.xaxis.set_major_locator(HourLocator(interval=2))
@@ -80,12 +85,21 @@ plt.xlabel("Time")
 
 plt.grid(b=True, which='both', color='0.65',linestyle='-')
 
-plt.title("Temperature Graph For Date: {0} @ {1}".format(td.strftime("%d/%m/%y"), loc))
+plt.title("Temperature Graph For Date: {0} @ {1}".format(date_sel.strftime("%d/%m/%y"), loc))
 
 plt.ylabel(u'Temperature {0}C'.format(degree_sign))
 
 matplotlib.rc('font', **font)
-
+#ax.annotate('Maximum', 
+			 #(dates[max_index], air_temp[max_index]), 
+			 #xytext=(0.7, 0.7), 
+			 #textcoords=('axes fraction'),
+			 #arrowprops=dict(facecolor='black', shrink=0.05),
+			 #fontsize='14',
+			 #color='black',
+			 #horizontalalignment='right',
+			 #verticalalignment='top')
+			 
 plt.setp(lines, linewidth=4.0)
-plt.savefig('/var/www/html/weather/images/' + outfn)
+plt.savefig('/var/www/html/weather-graph/images/' + outfn)
 

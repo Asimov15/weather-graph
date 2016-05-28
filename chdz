@@ -1,3 +1,3 @@
 echo start
-nice rsync -avgSH --delete --delete-excluded --ignore-errors --delete-after  --no-perms --no-owner --no-group . /var/www/html/weather/ 
+ionice -c3 rsync -avgSH --delete --delete-excluded --exclude-from="dzexlist" --ignore-errors --delete-after  --no-perms --no-owner --no-group . /var/www/html/weather-graph/ 
 echo end
