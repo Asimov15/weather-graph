@@ -1,4 +1,5 @@
 echo start
-nice rsync -avgSH --delete --delete-excluded --ignore-errors --delete-after  --no-perms --no-owner --no-group \
-. root@198.199.72.243:/var/www/html/weather/ 
+ionice -c3 rsync -avgSH --rsh="/usr/bin/sshpass -p 53111ng ssh -o StrictHostKeyChecking=no -l root" \
+	   --delete --delete-excluded --exclude-from="dzexlist" --ignore-errors --delete-after  --no-perms --no-owner --no-group \
+       . root@198.199.72.243:/var/www/html/weather-graph/
 echo end
