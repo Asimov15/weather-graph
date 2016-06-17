@@ -46,7 +46,7 @@
 				$wdates[$x] = clone $today->sub(new DateInterval("P" . "1" ."D"));
 			}			
 
-			exec('/usr/bin/python weath.py ' . $outfn . ' ' . $date1, $maxtemp); 				
+			exec('/usr/bin/python weath.py -f' . $outfn . ' -d' . $date1, $maxtemp); 				
 			echo("<body onload=\"setop(" . "'" . $date1 . "'" . ")\">\n");
 			echo("<div id='header'>");
 			echo("<h1 class='dz'>Melbourne Temperature Graph</h1>\n");
@@ -55,12 +55,16 @@
 				echo("<div class='validate'>\n");
 					echo("<div id='wrapper'>
 							<div id='outer1'>");
-							echo("<div class='maxtemp'>Maximum Temperature: </div>\n");
-							echo("<div class='mintemp'>Minimum Temperature: </div>\n");
+							echo("<span class='maxtemp'>Maximum Temperature: </span>");
+							echo("<span class='maxtempd'>" . $maxtemp[0] . "</span>");
+							echo("<br/>");
+							echo("<span class='mintemp'>Minimum Temperature: </span>");
+							echo("<span class='mintempd'>" . $maxtemp[1] . "</span>");
+							echo("<br/>");
+							echo("<span class='mintemp'>Current Temperature: </span>");
+							echo("<span class='mintempd'>" . $maxtemp[2] . "</span>");
 						echo("</div>");
-						echo("<div id='outer2'>");
-							echo("<div class='maxtempd'>" . $maxtemp[0] . "</div>\n");
-							echo("<div class='mintempd'>" . $maxtemp[1] . "</div>\n");
+						echo("<div id='outer2'>");							
 						echo("</div> 
 						<div id='outer3'>");
 							echo("<select id ='date' name='date'>\n");
@@ -73,7 +77,7 @@
 							echo("	</select> 
 						</div> 
 						<div id='outer4'>
-							<input type='submit' value='Submit' name='submit'/> 
+							<input type='submit' value='Draw' name='submit'/> 
 						</div> 
 					</div><!-- end #wrapper -->			
 					<div id='footer'>

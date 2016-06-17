@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
 from pylab import rcParams
 rcParams['figure.figsize'] = 20, 6.5
-
+import argparse
 import sys
 import codecs
 import urllib, json
@@ -20,6 +19,11 @@ from matplotlib import style
 from matplotlib.ticker import MultipleLocator, FormatStrFormatter
 from matplotlib.dates import DayLocator, HourLocator, DateFormatter, drange
 
+parser 					= argparse.ArgumentParser()
+date_def     			= datetime.today().strftime("%d%m%Y")
+parser.add_argument("-f",  "--outfile",  default="test.png", help="the output filename")
+parser.add_argument("-d",  "--adate"  ,  default=date_def,   help="the date")
+args = parser.parse_args()
 
 url        				= "http://www.bom.gov.au/fwo/IDV60901/IDV60901.95936.json"
 response  				= urllib.urlopen(url)
@@ -29,17 +33,12 @@ local_date_times       	= []
 degree_sign 			= unichr(176)
 max_air_temp			= -100.0
 min_air_temp            = 1000.0
-date_sel     			= datetime.today().date()
+current_temp            = 0
 max_airi                = 0
-
-if len(sys.argv) == 1:
-	outfn   			= "test.png"		
-elif len(sys.argv) == 2:	
-	outfn   			= sys.argv[1]
-elif len(sys.argv) > 2:
-	date_par     		= sys.argv[2]
-	date_sel     		= date(int(date_par[-4:]), int(date_par[3:-4]), int(date_par[:2]))
-	outfn   			= sys.argv[1]
+outfn 					= args.outfile
+date_par 				= args.adate
+current_temp_date                 = datetime.min
+date_sel	     		= date(int(date_par[-4:]), int(date_par[3:-4]), int(date_par[:2]))
 
 font 					= \
 {
@@ -55,17 +54,24 @@ for data2 in data1['observations']['data']:
 
 	local_date_time = (data2["local_date_time_full"])
 	local_date_timef = datetime(int(local_date_time[:4]), int(local_date_time[4:-8]), int(local_date_time[6:-6]), int(local_date_time[8:-4]), int(local_date_time[10:-2]))
-#	print date_sel
+
+	air_tempf = float(data2["air_temp"])
+	
 	if local_date_timef.date() == date_sel:	
 		local_date_times.append(local_date_timef)
-		air_tempf = float(data2["air_temp"])
+
 		if air_tempf > max_air_temp:
 			max_air_temp = air_tempf
 		
 		if air_tempf < min_air_temp:
 			min_air_temp =  air_tempf			
 			
-		air_temp.append(air_tempf)	
+		air_temp.append(air_tempf)
+			
+	if local_date_timef > current_temp_date:
+		current_temp_date = local_date_timef
+		current_temp 	  = air_tempf			
+			
 
 dates = mdates.date2num(local_date_times)
 fig, ax = plt.subplots()
@@ -82,7 +88,7 @@ ax.xaxis.set_major_formatter(DateFormatter('%H:%M'))
 for label in ax.xaxis.get_ticklabels():
 	label.set_rotation(45)
 	
-plt.subplots_adjust(left=0.04, bottom=0.20, right=0.97, top=0.94, wspace=0.2, hspace=0.0)
+plt.subplots_adjust(left=0.06, bottom=0.20, right=0.97, top=0.94, wspace=0.2, hspace=0.0)
 
 today = datetime.today()
 
@@ -110,5 +116,5 @@ plt.savefig('/var/www/html/weather-graph/images/' + outfn)
 
 print max_air_temp
 print min_air_temp
-
+print current_temp
 
