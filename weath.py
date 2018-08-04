@@ -6,11 +6,11 @@ matplotlib.use('Agg')
 
 from pylab import rcParams
 rcParams['figure.figsize'] = 20, 6.5
-#import os
+
 import argparse
 import sys
 import codecs
-import urllib, json, requests
+import json, requests
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import datetime
@@ -31,7 +31,6 @@ args = parser.parse_args()
 url        				= "http://www.bom.gov.au/fwo/IDV60701/IDV60701.95936.json"
 response  				= requests.get(url)
 data1                   = response.json()
-#data1     				= json.loads(response.read())
 air_temp    			= []
 local_date_times       	= []
 degree_sign 			= unichr(176)
@@ -111,7 +110,7 @@ matplotlib.rc('font', **font)
 plt.setp(lines, linewidth=3.0)
 
 save_dir = '/var/www/html/weather-graph/images/'
-	
+
 plt.savefig(save_dir + outfn)
 
 print max_air_temp
