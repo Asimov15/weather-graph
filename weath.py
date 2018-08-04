@@ -1,13 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import matplotlib
+matplotlib.use('Agg')
+
 from pylab import rcParams
 rcParams['figure.figsize'] = 20, 6.5
+#import os
 import argparse
 import sys
 import codecs
-import urllib, json
-import matplotlib
+import urllib, json, requests
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import datetime
@@ -25,20 +28,23 @@ parser.add_argument("-f",  "--outfile",  default="test.png", help="the output fi
 parser.add_argument("-d",  "--adate"  ,  default=date_def,   help="the date")
 args = parser.parse_args()
 
-url        				= "http://www.bom.gov.au/fwo/IDV60901/IDV60901.95936.json"
-response  				= urllib.urlopen(url)
-data1     				= json.loads(response.read())
+url        				= "http://www.bom.gov.au/fwo/IDV60701/IDV60701.95936.json"
+response  				= requests.get(url)
+data1                   = response.json()
+#data1     				= json.loads(response.read())
 air_temp    			= []
 local_date_times       	= []
 degree_sign 			= unichr(176)
-max_air_temp			= -100.0
+max_air_temp			= -1000.0
 min_air_temp            = 1000.0
 current_temp            = 0
 max_airi                = 0
 outfn 					= args.outfile
 date_par 				= args.adate
-current_temp_date                 = datetime.min
-date_sel	     		= date(int(date_par[-4:]), int(date_par[3:-4]), int(date_par[:2]))
+
+current_temp_date       = datetime.min
+date_sel	     		= date(int(date_par[-4:]), int(date_par[2:-4]), int(date_par[:2]))
+
 
 font 					= \
 {
@@ -101,20 +107,15 @@ plt.title("Temperature Graph For Date: {0} @ {1}".format(date_sel.strftime("%d/%
 plt.ylabel(u'Temperature {0}C'.format(degree_sign))
 
 matplotlib.rc('font', **font)
-#ax.annotate('Maximum', 
-			 #(dates[max_index], air_temp[max_index]), 
-			 #xytext=(0.7, 0.7), 
-			 #textcoords=('axes fraction'),
-			 #arrowprops=dict(facecolor='black', shrink=0.05),
-			 #fontsize='14',
-			 #color='black',
-			 #horizontalalignment='right',
-			 #verticalalignment='top')
 			 
 plt.setp(lines, linewidth=3.0)
-plt.savefig('/var/www/html/weather-graph/images/' + outfn)
+
+save_dir = '/var/www/html/weather-graph/images/'
+	
+plt.savefig(save_dir + outfn)
 
 print max_air_temp
 print min_air_temp
 print current_temp
-
+print save_dir
+print outfn
