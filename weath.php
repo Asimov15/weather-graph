@@ -31,6 +31,9 @@
         };			
         $outfn = RandomString() . ".png";
         $today = date_create("now");
+        $today_cp1 = clone $today;
+        $time = date('H:i');
+        $jd = cal_to_jd(CAL_GREGORIAN,date("m"),date("d"),date("Y"));
         $date1 = "";
         if (isset($_GET["submit"])) 
         {
@@ -52,24 +55,22 @@
         exec('/usr/bin/python weath.py -f' . $outfn . ' -d' . $date1 . ' 2> /tmp/error.txt', $maxtemp); 
         echo("<body onload=\"setop(" . "'" . $date1 . "'" . ")\">\n");
         echo("    <div id='header'>\n");
-        echo("        <h1 class='dz'>Melbourne Temperature Graph</h1>\n");
+        echo("        <h1>Melbourne Temperature Graph</h1>\n");
         echo("    </div>\n");
         echo("    <form action='weath.php' method='get'>\n");			
-        echo("        <div class='validate'>\n");
+        echo("        <div class='dates'>\n");
         echo("            <div id='wrapper'>\n");
         echo("                <div id='outer1'>\n");
-        echo("                    <span class='maxtemp'>Maximum Temperature: </span>\n");
-        echo("                    <span class='maxtempd'>" . $maxtemp[0] . "</span>\n");
+        echo("                    <span class='temp'>Maximum Temperature: </span>\n");
+        echo("                    <span class='tempd'>" . $maxtemp[0] . "</span>\n");
         echo("                    <br/>\n");
-        echo("                    <span class='mintemp'>Minimum Temperature: </span>\n");
-        echo("                    <span class='mintempd'>" . $maxtemp[1] . "</span>\n");
+        echo("                    <span class='temp'>Minimum Temperature: </span>\n");
+        echo("                    <span class='tempd'>" . $maxtemp[1] . "</span>\n");
         echo("                    <br/>");
-        echo("                    <span class='mintemp'>Current Temperature: </span>\n");
-        echo("                    <span class='mintempd'>" . $maxtemp[2] . "</span>\n");
+        echo("                    <span class='temp'>Current Temperature: </span>\n");
+        echo("                    <span class='tempd'>" . $maxtemp[2] . "</span>\n");
         echo("                </div><!-- end #outer1 -->\n");
-        echo("                <div id='outer2'>\n");							
-        echo("                </div><!-- end #outer2 -->\n"); 
-        echo("                <div id='outer3'>\n");
+        echo("                <div id='outer2'>\n");
         echo("                <select id ='date' name='date'>\n");
         for ($x = 3; $x >= 0; $x--)
         {
@@ -77,17 +78,27 @@
             $td2 = $wdates[$x]->format("d") . "/" . $wdates[$x]->format("m") . "/" . $wdates[$x]->format("Y");
             echo("                <option value='" . $td . "'>" . $td2 . "</option>\n");
         }
-        echo("                </select>\n"); 
+        echo("                </select>\n"); 							
+        echo("                </div><!-- end #outer2 -->\n"); 
+        echo("                <div id='outer3'>\n");
+        echo("                    <input type='submit' value='Draw' name='submit'/>\n");
         echo("                </div><!-- end #outer3 -->\n"); 
         echo("                <div id='outer4'>\n");
-        echo("                    <input type='submit' value='Draw' name='submit'/>\n");
+        echo("                <span class='temp'>Current Day:</span>\n");
+        echo("                <span class='tempd'>" . jddayofweek($jd,1) . "</span>\n");
+        echo("                    <br/>\n");    
+        echo("                <span class='temp'>Current Date:</span>\n");    
+        echo("                <span class='tempd'>" . $today_cp1->format("d/m/Y") . "</span>\n");    
+        echo("                    <br/>\n");
+        echo("                <span class='temp'>Current Time:</span>\n");    
+        echo("                <span class='tempd'>" . $time . "</span>\n");    
         echo("                </div><!-- end #outer4 -->\n"); 
         echo("            </div><!-- end #wrapper -->\n");			
         echo("            <div id='footer'>\n");
         echo("            </div>\n");
         echo("        </div>\n");
         echo("    </form>\n");
-        echo("    <div class='dz'>\n");
+        echo("    <div class='graph'>\n");
         echo("        <img class='dz' alt='Weather Graph For " . $date1 . "' src='images/" . $outfn . "'/>\n");				
         echo("    </div>\n");
         echo("    <div class='validate2'>\n");       

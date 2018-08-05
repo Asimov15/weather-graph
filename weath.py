@@ -5,7 +5,7 @@ import matplotlib
 matplotlib.use('Agg')
 
 from pylab import rcParams
-rcParams['figure.figsize'] = 20, 6.5
+rcParams['figure.figsize'] = 30, 10
 
 import argparse
 import sys
