@@ -43,10 +43,10 @@
 
 div.graph
 {    
-    padding: 20px;
-    margin-left: 20px;
+    padding: 10px;
+    margin-left: 10px;
     margin-right: 0px;
-    width: 95%; 
+    width: 97%; 
     border-style: groove;
 }
 
@@ -54,11 +54,11 @@ form
 {
 	/* border: 5px solid blue; */
 	margin-bottom: 20px;
-    margin-left: 20px;
+    margin-left: 10px;
     margin-right: 0px;
-	padding: 20px;
+	padding: 10px;
 	border-style: groove;
-	width: 95%;
+	width: 97%;
 }
 
 img.dz
@@ -69,10 +69,10 @@ img.dz
 
 div.dates
 { 
-    padding: 0px; 
-    margin-left: 20px;
+    padding: 10px; 
+    margin-left: 10px;
     margin-right: 0px;
-    width: 95%;    
+    width: 97%;    
 }
 
 div.validate2

@@ -5,7 +5,7 @@ import matplotlib
 matplotlib.use('Agg')
 
 from pylab import rcParams
-rcParams['figure.figsize'] = 30, 10
+rcParams['figure.figsize'] = 30, 12
 
 import argparse
 import sys
@@ -93,7 +93,7 @@ ax.xaxis.set_major_formatter(DateFormatter('%H:%M'))
 for label in ax.xaxis.get_ticklabels():
 	label.set_rotation(45)
 	
-plt.subplots_adjust(left=0.06, bottom=0.20, right=0.97, top=0.94, wspace=0.2, hspace=0.0)
+plt.subplots_adjust(left=0.03, bottom=0.1, right=0.98, top=0.94, wspace=0.2, hspace=0.0)
 
 today = datetime.today()
 
