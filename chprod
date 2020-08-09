@@ -1,5 +1,5 @@
 echo start
-ionice -c3 rsync -avgSH --rsh="/usr/bin/sshpass -p 53111ng ssh -o StrictHostKeyChecking=no -l root" \
+ionice -c3 rsync -avgSH --rsh="/usr/bin/sshpass -p 4n07h3r ssh -o StrictHostKeyChecking=no -l root" \
 	   --delete --delete-excluded --exclude-from="dzexlist" --ignore-errors --delete-after  --no-perms --no-owner --no-group \
-       . root@198.199.72.243:/var/www/html/weather-graph/
+       . root@198.199.72.243:/var/www/davidzuccaro.com.au/public_html/weather-graph/
 echo end
