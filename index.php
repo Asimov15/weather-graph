@@ -50,9 +50,9 @@
         for ($x = 1; $x <= 3; $x++)
         {				
             $wdates[$x] = clone $today->sub(new DateInterval("P" . "1" ."D"));
-        }					
-			
-        exec('/usr/bin/python weath.py -f' . $outfn . ' -d' . $date1 . ' 2> /tmp/error.txt', $maxtemp); 
+        }
+
+        exec('/usr/bin/python weath.py -f' . $outfn . ' -d' . $date1 . ' 2> /tmp/error.log', $maxtemp); 
         echo("<body onload=\"setop(" . "'" . $date1 . "'" . ")\">\n");
         echo("    <div id='header'>\n");
         echo("        <h1>Geelong Temperature Graph</h1>\n");
