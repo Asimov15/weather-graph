@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
 import matplotlib
@@ -65,8 +65,14 @@ for data2 in data1['observations']['data']:
 
 	local_date_time = (data2["local_date_time_full"])
 	local_date_timef = datetime(int(local_date_time[:4]), int(local_date_time[4:-8]), int(local_date_time[6:-6]), int(local_date_time[8:-4]), int(local_date_time[10:-2]))
+	
+	tmp = data2["air_temp"]
+	
+	# if field contains no data then skip.
+	if tmp == None:
+		continue
 
-	air_tempf = float(data2["air_temp"])
+	air_tempf = float(tmp)
 
 	if local_date_timef.date() == date_sel:	
 		local_date_times.append(local_date_timef)
@@ -121,8 +127,8 @@ else:
 
 plt.savefig(save_dir + outfn)
 
-print max_air_temp
-print min_air_temp
-print current_temp
-print save_dir
-print outfn
+print(max_air_temp)
+print(min_air_temp)
+print(current_temp)
+print(save_dir)
+print(outfn)
